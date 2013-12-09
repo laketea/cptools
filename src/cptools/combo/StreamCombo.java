@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cptools;
+package cptools.combo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,14 +14,14 @@ import javax.swing.JTextArea;
  *
  * @author zhangwei <laketea@163.com>
  */
-public class StreamGobblers extends Thread {
+public class StreamCombo extends Thread {
     
     public static JTextArea jtx ;
 
     InputStream is;
     String type;
 
-    public StreamGobblers(InputStream is, String type) {
+    public StreamCombo(InputStream is, String type) {
         this.is = is;
         this.type = type;
     }

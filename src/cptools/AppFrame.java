@@ -10,9 +10,12 @@
  */
 package cptools;
 
+import cptools.combo.ComboPnl;
 import cptools.ui.ConsolePnl;
 import cptools.ui.EditPnl;
+import cptools.ui.FileServerPnl;
 import cptools.ui.TablePnl;
+import cptools.ui.FileClientPnl;
 import cptools.ui.Utils;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -29,6 +32,9 @@ public class AppFrame extends javax.swing.JFrame {
     private TablePnl proPnl;
     private TablePnl dirPnl;
     private ConsolePnl consolePnl;
+    private FileServerPnl  fileServerPnl;
+    private FileClientPnl uploadPnl;
+    private ComboPnl comboPnl ;
 
     /** Creates new form AppFrame */
     public AppFrame() {
@@ -40,10 +46,16 @@ public class AppFrame extends javax.swing.JFrame {
     private void init() {
         proPnl = new TablePnl("projects");
         dirPnl = new TablePnl("dirs");
+        fileServerPnl = new FileServerPnl();
         consolePnl = new ConsolePnl();
+        uploadPnl = new FileClientPnl();
+        comboPnl = new ComboPnl();
         this.dirContainer.add(dirPnl, BorderLayout.CENTER);
         this._projectContainer.add(proPnl, BorderLayout.CENTER);
         this.OutputContainer.add(consolePnl, BorderLayout.CENTER);
+        this.fileServerContainer.add(fileServerPnl,BorderLayout.CENTER);
+        this.uploadContainer.add(uploadPnl,BorderLayout.CENTER);
+        this.comboContainer.add(comboPnl,BorderLayout.CENTER);
         StreamGobblers.setTextArea(consolePnl.getTextArea());
     }
 
@@ -83,6 +95,9 @@ public class AppFrame extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         dirContainer = new javax.swing.JPanel();
+        fileServerContainer = new javax.swing.JPanel();
+        uploadContainer = new javax.swing.JPanel();
+        comboContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -143,10 +158,10 @@ public class AppFrame extends javax.swing.JFrame {
         projectContainer.setLayout(projectContainerLayout);
         projectContainerLayout.setHorizontalGroup(
             projectContainerLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(OutputContainer, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 869, Short.MAX_VALUE)
-            .add(_projectContainer, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 869, Short.MAX_VALUE)
+            .add(OutputContainer, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 889, Short.MAX_VALUE)
+            .add(_projectContainer, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 889, Short.MAX_VALUE)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, projectContainerLayout.createSequentialGroup()
-                .addContainerGap(177, Short.MAX_VALUE)
+                .addContainerGap(197, Short.MAX_VALUE)
                 .add(jButton1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jButton2)
@@ -180,6 +195,15 @@ public class AppFrame extends javax.swing.JFrame {
 
         dirContainer.setLayout(new java.awt.BorderLayout());
         MainTabPnl.addTab("常用目录", dirContainer);
+
+        fileServerContainer.setLayout(new java.awt.BorderLayout());
+        MainTabPnl.addTab("文件服务器", fileServerContainer);
+
+        uploadContainer.setLayout(new java.awt.BorderLayout());
+        MainTabPnl.addTab("上传文件", uploadContainer);
+
+        comboContainer.setLayout(new java.awt.BorderLayout());
+        MainTabPnl.addTab("文件合并功能", comboContainer);
 
         jMenu1.setText("系统");
 
@@ -218,7 +242,7 @@ public class AppFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(MainTabPnl, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
+            .add(MainTabPnl)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -301,7 +325,9 @@ public class AppFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane MainTabPnl;
     private javax.swing.JPanel OutputContainer;
     private javax.swing.JPanel _projectContainer;
+    private javax.swing.JPanel comboContainer;
     private javax.swing.JPanel dirContainer;
+    private javax.swing.JPanel fileServerContainer;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -316,5 +342,6 @@ public class AppFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel projectContainer;
+    private javax.swing.JPanel uploadContainer;
     // End of variables declaration//GEN-END:variables
 }
