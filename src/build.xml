@@ -7,7 +7,7 @@
     <property name="classes.dir" location="../classes"/>
     <property name="app.jar.dir" value="${work.dir}/tools"/>
     <property name="jar.name" value="${ant.project.name}.jar"/>
-     <property name="lib.dir" value="../lib"/>
+    <property name="lib.dir" value="../lib"/>
 	
 	<!-- 设置classpath -->
     <path id="classpath">
@@ -42,13 +42,13 @@
     </target>
     
     <target name="unjar" depends="init" description="unjar three part jar">
-		<unjar dest="${classes.dir}">
+        <unjar dest="${classes.dir}">
 			<!-- 包  件所在的目录 -->
-			<fileset dir="../lib">
-				<include name="**/*.jar" />
-			</fileset>
-		</unjar>
-	</target>
+            <fileset dir="../lib">
+                <include name="**/*.jar" />
+            </fileset>
+        </unjar>
+    </target>
 	
 	<!-- 复制资源文件到编译路径 -->
     <target name="copyresource">
@@ -79,6 +79,9 @@
         <jar basedir="${classes.dir}" manifest="${classes.dir}/MANIFEST.MF" compress="true" jarfile="${app.jar.dir}/${jar.name}">        	
             <include name="**"/>			
             <exclude name="MANIFEST.MF"/>
+            <exclude name="META-INF/*.RSA"/>
+            <exclude name="META-INF/*.DSA"/>
+            <exclude name="META-INF/*.SF"/> 
         </jar>        
     </target>	
 

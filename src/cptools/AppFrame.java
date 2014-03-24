@@ -11,6 +11,7 @@
 package cptools;
 
 import cptools.combo.ComboPnl;
+import cptools.httpserver.HttpServerPnl;
 import cptools.ui.ConsolePnl;
 import cptools.ui.EditPnl;
 import cptools.ui.FileServerPnl;
@@ -30,11 +31,11 @@ import javax.swing.UIManager;
 public class AppFrame extends javax.swing.JFrame {
 
     private TablePnl proPnl;
-    private TablePnl dirPnl;
     private ConsolePnl consolePnl;
-    private FileServerPnl  fileServerPnl;
+    private FileServerPnl fileServerPnl;
     private FileClientPnl uploadPnl;
-    private ComboPnl comboPnl ;
+    private ComboPnl comboPnl;
+    private HttpServerPnl httpPnl;
 
     /** Creates new form AppFrame */
     public AppFrame() {
@@ -45,17 +46,17 @@ public class AppFrame extends javax.swing.JFrame {
 
     private void init() {
         proPnl = new TablePnl("projects");
-        dirPnl = new TablePnl("dirs");
         fileServerPnl = new FileServerPnl();
         consolePnl = new ConsolePnl();
         uploadPnl = new FileClientPnl();
         comboPnl = new ComboPnl();
-        this.dirContainer.add(dirPnl, BorderLayout.CENTER);
+        httpPnl = new HttpServerPnl();
         this._projectContainer.add(proPnl, BorderLayout.CENTER);
         this.OutputContainer.add(consolePnl, BorderLayout.CENTER);
-        this.fileServerContainer.add(fileServerPnl,BorderLayout.CENTER);
-        this.uploadContainer.add(uploadPnl,BorderLayout.CENTER);
-        this.comboContainer.add(comboPnl,BorderLayout.CENTER);
+        this.fileServerContainer.add(fileServerPnl, BorderLayout.CENTER);
+        this.uploadContainer.add(uploadPnl, BorderLayout.CENTER);
+        this.comboContainer.add(comboPnl, BorderLayout.CENTER);
+        this.httpContainer.add(httpPnl, BorderLayout.CENTER);
         StreamGobblers.setTextArea(consolePnl.getTextArea());
     }
 
@@ -66,7 +67,7 @@ public class AppFrame extends javax.swing.JFrame {
 
     private void addDir() {
         edit("dirs");
-        dirPnl.reflush();
+//        dirPnl.reflush();
     }
 
     private void edit(String id) {
@@ -94,10 +95,12 @@ public class AppFrame extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        dirContainer = new javax.swing.JPanel();
+        jButton7 = new javax.swing.JButton();
+        httpContainer = new javax.swing.JPanel();
         fileServerContainer = new javax.swing.JPanel();
         uploadContainer = new javax.swing.JPanel();
         comboContainer = new javax.swing.JPanel();
+        dirContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -154,6 +157,13 @@ public class AppFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton7.setText("刷新数据");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout projectContainerLayout = new org.jdesktop.layout.GroupLayout(projectContainer);
         projectContainer.setLayout(projectContainerLayout);
         projectContainerLayout.setHorizontalGroup(
@@ -161,19 +171,21 @@ public class AppFrame extends javax.swing.JFrame {
             .add(OutputContainer, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 889, Short.MAX_VALUE)
             .add(_projectContainer, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 889, Short.MAX_VALUE)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, projectContainerLayout.createSequentialGroup()
-                .addContainerGap(197, Short.MAX_VALUE)
+                .addContainerGap(119, Short.MAX_VALUE)
                 .add(jButton1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jButton2)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jButton3)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jButton5)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jButton6)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jButton4)
-                .add(153, 153, 153))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButton7)
+                .add(117, 117, 117))
         );
         projectContainerLayout.setVerticalGroup(
             projectContainerLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -186,15 +198,16 @@ public class AppFrame extends javax.swing.JFrame {
                     .add(jButton3)
                     .add(jButton5)
                     .add(jButton6)
-                    .add(jButton4))
+                    .add(jButton4)
+                    .add(jButton7))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(OutputContainer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 225, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         MainTabPnl.addTab("工程列表", projectContainer);
 
-        dirContainer.setLayout(new java.awt.BorderLayout());
-        MainTabPnl.addTab("常用目录", dirContainer);
+        httpContainer.setLayout(new java.awt.BorderLayout());
+        MainTabPnl.addTab("WEB服务器", httpContainer);
 
         fileServerContainer.setLayout(new java.awt.BorderLayout());
         MainTabPnl.addTab("文件服务器", fileServerContainer);
@@ -204,6 +217,9 @@ public class AppFrame extends javax.swing.JFrame {
 
         comboContainer.setLayout(new java.awt.BorderLayout());
         MainTabPnl.addTab("文件合并功能", comboContainer);
+
+        dirContainer.setLayout(new java.awt.BorderLayout());
+        MainTabPnl.addTab("目录", dirContainer);
 
         jMenu1.setText("系统");
 
@@ -242,7 +258,9 @@ public class AppFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(MainTabPnl)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(MainTabPnl, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -264,35 +282,40 @@ public class AppFrame extends javax.swing.JFrame {
         addDir();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        this.proPnl.gitUpdate();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        this.proPnl.ant();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        this.proPnl.updateAndAnt();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        this.proPnl.getUpdateAll();
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
         this.proPnl.updateAndAntAll();
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }
+        // TODO add your handling code here:         this.proPnl.updateAndAntAll();     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        this.proPnl.getUpdateAll();
+    }
+        // TODO add your handling code here:         this.proPnl.getUpdateAll();     }//GEN-LAST:event_jButton5ActionPerformed
+
+        private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.consolePnl.clearTextArea();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }
+        // TODO add your handling code here:         this.consolePnl.clearTextArea();     }//GEN-LAST:event_jButton4ActionPerformed
+
+        private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.proPnl.updateAndAnt();
+    }
+        // TODO add your handling code here:         this.proPnl.updateAndAnt();     }//GEN-LAST:event_jButton3ActionPerformed
+
+        private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.proPnl.ant();
+    }
+        // TODO add your handling code here:         this.proPnl.ant();     }//GEN-LAST:event_jButton2ActionPerformed
+
+        private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.proPnl.gitUpdate();
+    }
+        // TODO add your handling code here:         this.proPnl.gitUpdate();     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        this.proPnl.updateProjectsData();;
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     public static void main(String args[]) {
 
@@ -311,13 +334,13 @@ public class AppFrame extends javax.swing.JFrame {
 
             public void run() {
                 AppFrame frame = new AppFrame();
-                frame.setDefaultCloseOperation(EXIT_ON_CLOSE); 
-                
-                frame.setSize(890,642);
-                frame.setResizable(false); 
-                frame.setLocationRelativeTo(frame.getOwner()); 
+                frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+                frame.setSize(890, 642);
+                frame.setResizable(false);
+                frame.setLocationRelativeTo(frame.getOwner());
                 frame.setVisible(true);
-                
+
             }
         });
     }
@@ -328,12 +351,14 @@ public class AppFrame extends javax.swing.JFrame {
     private javax.swing.JPanel comboContainer;
     private javax.swing.JPanel dirContainer;
     private javax.swing.JPanel fileServerContainer;
+    private javax.swing.JPanel httpContainer;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /Users/yfcd/gitrepo/cptools
-ant
+cd /Users/yfcd/gitrepo/business
+git pull

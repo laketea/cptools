@@ -21,6 +21,7 @@ public class Shell extends Thread {
     private String directory;
     private int state = 0;
     public static String CPCMD = "";
+    private String clientId = null;
     
     
     static {
@@ -34,6 +35,11 @@ public class Shell extends Thread {
         
     }
     private List<String[]> lst;
+    
+    public Shell(List<String[]> lst,String clientId) {
+        this.lst = lst;
+        this.clientId = clientId;
+    }
 
     public Shell(List<String[]> lst) {
         this.lst = lst;
@@ -132,11 +138,11 @@ public class Shell extends Thread {
             Process process = builder.start();
 
             StreamGobblers errorGobbler = new StreamGobblers(
-                    process.getErrorStream(), "ERROR");
+                    process.getErrorStream(), "ERROR",this.clientId);
 
             // any output?
             StreamGobblers outputGobbler = new StreamGobblers(
-                    process.getInputStream(), "OUTPUT");
+                    process.getInputStream(), "OUTPUT",this.clientId);
 
             // kick them off
             errorGobbler.start();

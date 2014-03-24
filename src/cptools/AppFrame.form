@@ -71,7 +71,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="MainTabPnl" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="MainTabPnl" pref="910" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -103,19 +106,21 @@
                   <Component id="OutputContainer" alignment="0" pref="889" max="32767" attributes="1"/>
                   <Component id="_projectContainer" alignment="0" pref="889" max="32767" attributes="1"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="197" max="32767" attributes="0"/>
+                      <EmptySpace pref="119" max="32767" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButton5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButton7" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -131,6 +136,7 @@
                           <Component id="jButton5" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton6" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton7" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="OutputContainer" min="-2" pref="225" max="-2" attributes="0"/>
@@ -195,13 +201,21 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="jButton7">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x5237;&#x65b0;&#x6570;&#x636e;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="dirContainer">
+        <Container class="javax.swing.JPanel" name="httpContainer">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="&#x5e38;&#x7528;&#x76ee;&#x5f55;">
-                <Property name="tabTitle" type="java.lang.String" value="&#x5e38;&#x7528;&#x76ee;&#x5f55;"/>
+              <JTabbedPaneConstraints tabName="WEB&#x670d;&#x52a1;&#x5668;">
+                <Property name="tabTitle" type="java.lang.String" value="WEB&#x670d;&#x52a1;&#x5668;"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -235,6 +249,17 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&#x6587;&#x4ef6;&#x5408;&#x5e76;&#x529f;&#x80fd;">
                 <Property name="tabTitle" type="java.lang.String" value="&#x6587;&#x4ef6;&#x5408;&#x5e76;&#x529f;&#x80fd;"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+        </Container>
+        <Container class="javax.swing.JPanel" name="dirContainer">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="&#x76ee;&#x5f55;">
+                <Property name="tabTitle" type="java.lang.String" value="&#x76ee;&#x5f55;"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

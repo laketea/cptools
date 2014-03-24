@@ -1,0 +1,15 @@
+.idea/
+/bin/
+/build/
+/classes/
+.settings/
+/CVS/*
+*/CVS/*
+.cvsignore
+*/.cvsignore
+*.swp
+.DS_Store
+*.iml
+.project
+.classpath
+version.properties

@@ -23,17 +23,17 @@ import javax.swing.table.AbstractTableModel;
 public class ProjectTableModel extends AbstractTableModel {
 
     private String id;
-    List<String[]> dataList = new ArrayList<String[]>();
-    public String[] columnNames = {"序号", "项目名称", "路径", "状态"};
+    List<Project> dataList = new ArrayList<Project>();
+    public String[] columnNames = {"序号", "项目名称", "路径", "状态","更新时间","编译时间"};
 
-    public ProjectTableModel(List<String[]> lst, String id) {
+    public ProjectTableModel(List<Project> lst, String id) {
         if (lst != null) {
             this.dataList = lst;
         }
         this.id = id;
     }
 
-    public void addDataList(List<String[]> lst) {
+    public void addDataList(List<Project> lst) {
         if (dataList != null) {
             dataList.addAll(lst);
         } else {
@@ -46,12 +46,12 @@ public class ProjectTableModel extends AbstractTableModel {
         return dataList.size();
     }
 
-    public void insertRow(int row, String[] bean) {
+    public void insertRow(int row, Project bean) {
         dataList.add(row, bean);
         fireTableDataChanged();
     }
 
-    public void insertRow(String[] bean) {
+    public void insertRow(Project bean) {
         dataList.add(bean);
         fireTableDataChanged();
     }
@@ -65,14 +65,37 @@ public class ProjectTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
+        Object value = "";
         if (dataList == null || dataList.get(row) == null) {
             return null;
         }
-        String[] arr = dataList.get(row);
+        Project arr = dataList.get(row);
         if (col == 0) {
             return (row + 1) + "";
         }
-        return arr[col-1];
+        switch (col) {
+            case 0:
+                value = (row + 1) + "";
+                break;
+            case 1:
+                value = arr.getName();
+                break;
+            case 2:
+                value = arr.getDir();
+                break;
+            case 3:
+                value = arr.getStatus();
+                break;
+            case 4:
+                value = arr.getLastUpdate();
+                break;
+            case 5:
+                value = arr.getLastBuild();
+                break;
+            default:
+                break;
+        }
+        return value;
     }
 
     public boolean isNumeric(String str) {
@@ -85,26 +108,21 @@ public class ProjectTableModel extends AbstractTableModel {
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-
         if (columnIndex == 0) {
             if (!isNumeric((String) aValue)) {
                 return;
             }
         }
+        if (columnIndex == 4) {
+            this.getRowObject(rowIndex).resetLastUpdateTime();
 
+        }
+        if (columnIndex == 5) {
+            this.getRowObject(rowIndex).resetLastBuildTime();
+        }
+        this.fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
-//    public void listSort() {
-//        Collections.sort(dataList, new Comparator() {
-//
-//            public int compare(Object a, Object b) {
-//                String one = ((String[]) a)(1);
-//                String two = ((String[]) a)(1);
-//                return one - two;
-//            }
-//        });
-//
-//    }
     /*  
      *   JTable   uses   this   method   to   determine   the   default   renderer/  
      *   editor   for   each   cell.     If   we   didn't   implement   this   method,  
@@ -123,22 +141,18 @@ public class ProjectTableModel extends AbstractTableModel {
         return false;
     }
 
-    public String[] getRowObject(int row) {
+    public Project getRowObject(int row) {
         return dataList.get(row);
     }
 
-    public void updateSelectedRow(int selectedRow, String[] data) {
-//        PictureBean pb = getRowObject(selectedRow);
-//        pb.setId(data.getId());
-//        pb.setPicname(data.getPicname());
-//        pb.setPicurl(data.getPicurl());
-//        pb.setOrderid(data.getOrderid());
-//        pb.setIdentify(data.getIdentify());
-//        pb.setDescription(data.getDescription());
+    public void updateSelectedRow(int selectedRow, Project pro) {
+        Project select = getRowObject(selectedRow);
+        select.setLastBuild(pro.getLastBuild());
+        select.setLastUpdate(pro.getLastUpdate());
         fireTableDataChanged();
     }
 
-    public void reload(List<String[]> toSavelist) {
+    public void reload(List<Project> toSavelist) {
         dataList.clear();
         dataList.addAll(toSavelist);
         fireTableDataChanged();
@@ -149,14 +163,14 @@ public class ProjectTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public List<String[]> getDataList() {
+    public List<Project> getDataList() {
         if (dataList == null) {
-            return new ArrayList<String[]>();
+            return new ArrayList<Project>();
         }
         return dataList;
     }
 
-    public void setDataList(List<String[]> dataList) {
+    public void setDataList(List<Project> dataList) {
         this.dataList = dataList;
     }
 }

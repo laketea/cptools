@@ -12,11 +12,13 @@ package cptools.ui;
 
 import cptools.Shell;
 import cptools.model.DirTableModel;
+import cptools.model.Project;
 import cptools.model.ProjectTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TablePnl extends javax.swing.JPanel {
 
     private JTable table;
     private AbstractTableModel model;
-    private List<String[]> data;
+    private List<Project> data;
     private String id;
 
     /** Creates new form TablePnl */
@@ -57,10 +59,12 @@ public class TablePnl extends javax.swing.JPanel {
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setColumnSelectionAllowed(false);
         table.setRowSelectionAllowed(true);
-        table.getColumnModel().getColumn(0).setPreferredWidth(100);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        table.getColumnModel().getColumn(2).setPreferredWidth(400);
-        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table.getColumnModel().getColumn(2).setPreferredWidth(300);
+        table.getColumnModel().getColumn(3).setPreferredWidth(50);
+        table.getColumnModel().getColumn(4).setPreferredWidth(180);
+        table.getColumnModel().getColumn(5).setPreferredWidth(180);
         table.addMouseListener(new MouseAdapter() {
 
             public void mousePressed(MouseEvent event) {
@@ -102,11 +106,10 @@ public class TablePnl extends javax.swing.JPanel {
         if ("projects".equals(id)) {
             model = new ProjectTableModel(this.data, id);
         } else {
-            model = new DirTableModel(this.data, id);
+            model = new DirTableModel(new ArrayList<String[]>(), id);
         }
-
     }
-
+ 
     private void ShowMenu(int x, int y) {
 
         JMenuItem updateItem = new JMenuItem("GIT¸üÐÂ");
@@ -121,7 +124,7 @@ public class TablePnl extends javax.swing.JPanel {
             popupMenu.add(updateItem);
             popupMenu.add(antItem);
             popupMenu.add(allItem);
-            
+
         }
         popupMenu.add(delItem);
         popupMenu.add(openItem);
@@ -162,10 +165,12 @@ public class TablePnl extends javax.swing.JPanel {
     }
 
     public void reflashUI() {
-        table.getColumnModel().getColumn(0).setPreferredWidth(100);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        table.getColumnModel().getColumn(2).setPreferredWidth(400);
-        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table.getColumnModel().getColumn(2).setPreferredWidth(300);
+        table.getColumnModel().getColumn(3).setPreferredWidth(50);
+        table.getColumnModel().getColumn(4).setPreferredWidth(180);
+        table.getColumnModel().getColumn(5).setPreferredWidth(180);
         table.updateUI();
     }
 
@@ -176,16 +181,16 @@ public class TablePnl extends javax.swing.JPanel {
         }
         List<String[]> list = new ArrayList<String[]>();
         for (int i = selections.length - 1; i >= 0; i--) {
-             String path = (String) model.getValueAt(selections[i], 2);
+            String path = (String) model.getValueAt(selections[i], 2);
             try {
-                (new Shell(Shell.CPCMD,"./",path)).execute();
+                (new Shell(Shell.CPCMD, "./", path)).execute();
             } catch (IOException ex) {
                 Logger.getLogger(TablePnl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         new Thread(new Shell(list)).start();
     }
-    
+
     public void gitUpdate() {
         int[] selections = table.getSelectedRows();
         if (selections.length == 0) {
@@ -194,10 +199,16 @@ public class TablePnl extends javax.swing.JPanel {
         List<String[]> list = new ArrayList<String[]>();
         for (int i = selections.length - 1; i >= 0; i--) {
             String path = (String) model.getValueAt(selections[i], 2);
-            list.add(new String[]{path,"0"});
+            list.add(new String[]{path, "0"});
+            model.setValueAt(null, selections[i], 4);
+
         }
-         new Thread(new Shell(list)).start();
-        
+        new Thread(new Shell(list)).start();
+
+    }
+    
+    public void updateProjectsData(){
+        model.fireTableDataChanged();
     }
 
     public void ant() {
@@ -207,43 +218,53 @@ public class TablePnl extends javax.swing.JPanel {
         }
         List<String[]> list = new ArrayList<String[]>();
         for (int i = selections.length - 1; i >= 0; i--) {
-             String path = (String) model.getValueAt(selections[i], 2);
-            list.add(new String[]{path,"1"});
+            String path = (String) model.getValueAt(selections[i], 2);
+            list.add(new String[]{path, "1"});
+            model.setValueAt(null, selections[i], 5);
         }
         new Thread(new Shell(list)).start();
+        Utils.saveProjects();
     }
-    
-    
-    
+
     public void getUpdateAll() {
-        
+
         List<String[]> list = new ArrayList<String[]>();
-        for (String[] value:this.data) {
-             String path = value[1];
-            list.add(new String[]{path,"0"});
+        for (Project project : this.data) {
+            String path = project.getDir();
+            list.add(new String[]{path, "0"});
+            project.resetLastUpdateTime();
         }
         new Thread(new Shell(list)).start();
+        model.fireTableDataChanged();
+        Utils.saveProjects();
     }
-    
+
     public void antAll() {
-        
+
         List<String[]> list = new ArrayList<String[]>();
-        for (String[] value:this.data) {
-             String path = value[1];
-            list.add(new String[]{path,"1"});
+        for (Project value : this.data) {
+            String path = value.getDir();
+            list.add(new String[]{path, "1"});
+            value.resetLastBuildTime();
         }
         new Thread(new Shell(list)).start();
+        model.fireTableDataChanged();
+        Utils.saveProjects();
     }
-    
+
     public void updateAndAntAll() {
-        
+
         List<String[]> list = new ArrayList<String[]>();
-        for (String[] value:this.data) {
-             String path = value[1];
-             list.add(new String[]{path,"0"});
-            list.add(new String[]{path,"1"});
+        for (Project value : this.data) {
+            String path = value.getDir();
+            list.add(new String[]{path, "0"});
+            list.add(new String[]{path, "1"});
+            value.resetLastBuildTime();
+            value.resetLastUpdateTime();
         }
         new Thread(new Shell(list)).start();
+        model.fireTableDataChanged();
+        Utils.saveProjects();
     }
 
     public void updateAndAnt() {
@@ -254,10 +275,13 @@ public class TablePnl extends javax.swing.JPanel {
         List<String[]> list = new ArrayList<String[]>();
         for (int i = selections.length - 1; i >= 0; i--) {
             String path = (String) model.getValueAt(selections[i], 2);
-            list.add(new String[]{path,"0"});
-            list.add(new String[]{path,"1"});
+            list.add(new String[]{path, "0"});
+            list.add(new String[]{path, "1"});
+            model.setValueAt(null, selections[i], 4);
+            model.setValueAt(null, selections[i], 5);
         }
-        new Thread(new Shell(list)).start();            
+        new Thread(new Shell(list)).start();
+        Utils.saveProjects();
     }
 
     private void delete() {
@@ -273,6 +297,7 @@ public class TablePnl extends javax.swing.JPanel {
 
         for (int i = selections.length - 1; i >= 0; i--) {
             Utils.delete((String) model.getValueAt(selections[i], 1), (String) model.getValueAt(selections[i], 2), id);
+            Utils.saveProjects();
         }
         this.reflush();
     }
@@ -282,6 +307,9 @@ public class TablePnl extends javax.swing.JPanel {
         reloadData();
         table.setModel(model);
         reflashUI();
+        File file = new File("");
+        
+        System.out.println(file.getAbsolutePath());
     }
 
     /** This method is called from within the constructor to
